@@ -620,20 +620,34 @@ with tab2:
                                             st.markdown(f"## {confidence_pct:.1f}%")
                                             st.progress(result["confidence"])
                                             st.markdown('</div>', unsafe_allow_html=True)
-                                        
+
                                         if len(result["top_3_predictions"]) > 1:
                                             st.markdown(f"#### {ui['other_possibilities']}")
                                             for i, pred in enumerate(result["top_3_predictions"][1:], 1):
-                                                cols = st.columns([3, 5, 2])
+                                                cols = st.columns([4, 5, 1.5])  # CHANGED: Better column ratios
                                                 with cols[0]:
-                                                    st.markdown(f'<div class="disease-name">{pred["class"]}</div>', unsafe_allow_html=True)
+                                                    # Use a container with proper padding
+                                                    st.markdown(f'<div style="padding: 0.5rem 0; font-weight: 500;">{pred["class"]}</div>', unsafe_allow_html=True)
                                                 with cols[1]:
                                                     confidence_val = pred['confidence'] * 100
-                                                    st.progress(pred['confidence'])
+                                                    # Smaller progress bar
+                                                    st.progress(pred['confidence'], text=f"{confidence_val:.1f}%")
                                                 with cols[2]:
-                                                    st.markdown(f'<div class="confidence-badge">{confidence_val:.1f}%</div>', unsafe_allow_html=True)
+                                                    st.markdown(f'<div style="text-align: right; padding: 0.5rem 0; font-weight: 600; color: #2E7D32;">{confidence_val:.1f}%</div>', unsafe_allow_html=True)    
                                         
-                                        st.markdown('</div>', unsafe_allow_html=True)
+                                        # if len(result["top_3_predictions"]) > 1:
+                                        #     st.markdown(f"#### {ui['other_possibilities']}")
+                                        #     for i, pred in enumerate(result["top_3_predictions"][1:], 1):
+                                        #         cols = st.columns([3, 5, 2])
+                                        #         with cols[0]:
+                                        #             st.markdown(f'<div class="disease-name">{pred["class"]}</div>', unsafe_allow_html=True)
+                                        #         with cols[1]:
+                                        #             confidence_val = pred['confidence'] * 100
+                                        #             st.progress(pred['confidence'])
+                                        #         with cols[2]:
+                                        #             st.markdown(f'<div class="confidence-badge">{confidence_val:.1f}%</div>', unsafe_allow_html=True)
+                                        
+                                        # st.markdown('</div>', unsafe_allow_html=True)
                             else:
                                 st.error(f"Failed to detect disease. Status code: {response.status_code}")
                                 
